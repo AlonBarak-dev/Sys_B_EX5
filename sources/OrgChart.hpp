@@ -13,7 +13,7 @@ namespace ariel{
         public:
 
             OrgChart() : _size(0) {}
-            ~OrgChart() {}
+            // ~OrgChart();
 
 
             class Iterator{
@@ -22,9 +22,9 @@ namespace ariel{
                     Node* _ptr;
                 public:
                     Iterator(Node* ptr) : _ptr(ptr){}
-                    Iterator(){}
-                    ~Iterator(){}
-                    void operator=(const Iterator&);
+                    Iterator(): _ptr(NULL){}
+                    // ~Iterator();
+                    // Iterator& operator=(const Iterator&);
                     void operator++();
                     void operator--();
                     Node* operator*() const;

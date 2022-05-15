@@ -1,12 +1,14 @@
 #include "OrgChart.hpp"
+#include <iostream>
 
 using namespace std;
 
 
 namespace ariel{
 
-
-    void OrgChart::Iterator::operator=(const OrgChart::Iterator& it){}
+    // OrgChart::~OrgChart(){};
+    // OrgChart::Iterator::~Iterator(){};
+    // OrgChart::Iterator& OrgChart::Iterator::operator=(const OrgChart::Iterator& it){}
     void OrgChart::Iterator::operator++(){}
     void OrgChart::Iterator::operator--(){}
     Node* OrgChart::Iterator::operator*() const{

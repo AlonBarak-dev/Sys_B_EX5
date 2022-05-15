@@ -13,9 +13,9 @@ namespace ariel{
         
         public:
 
-            Node(std::string name) : _num_of_sub_nodes(0), _name(name), _size(name.length()) {}
-            Node(){}
-            ~Node() {}
+            Node(const std::string& name) : _num_of_sub_nodes(0), _name(name), _size(name.length()) {}
+            Node() :  _num_of_sub_nodes(0), _name(""), _size(0){}
+            // ~Node();
 
             std::string getName();
             void setName(std::string newName);
