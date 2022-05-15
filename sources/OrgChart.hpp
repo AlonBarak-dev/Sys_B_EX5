@@ -9,22 +9,23 @@ namespace ariel{
         private:
             Node _root;
             int _size;
+            std::vector<Node> list_of_nodes;
+
         
         public:
 
             OrgChart() : _size(0) {}
-            // ~OrgChart();
-
 
             class Iterator{
 
                 private:
                     Node* _ptr;
+                    // 0 : Level order, 1 : reverse level order, 2 : preorder
+                    int _traverse; 
+
                 public:
-                    Iterator(Node* ptr) : _ptr(ptr){}
+                    Iterator(Node* ptr) : _ptr(ptr), _traverse(0){}
                     Iterator(): _ptr(NULL){}
-                    // ~Iterator();
-                    // Iterator& operator=(const Iterator&);
                     void operator++();
                     void operator--();
                     Node* operator*() const;
@@ -35,8 +36,8 @@ namespace ariel{
 
 
 
-            OrgChart add_root(const std::string& root_name);
-            OrgChart add_sub(const std::string& super, const std::string& sub);
+            OrgChart& add_root(const std::string& root_name);
+            OrgChart& add_sub(const std::string& super, const std::string& sub);
             friend std::ostream& operator<<(std::ostream& st, OrgChart& organization);
             Iterator begin_level_order();
             Iterator end_level_order();

@@ -19,7 +19,6 @@ namespace ariel{
 
     void Node::addSubNode(Node node){
         this->_subNodes.push_back(node);
-        return;
     }
 
     void Node::delSubNode(Node node){
