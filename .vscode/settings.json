@@ -1,0 +1,16 @@
+{
+    "files.associations": {
+        "bitset": "cpp",
+        "system_error": "cpp",
+        "typeindex": "cpp",
+        "typeinfo": "cpp",
+        "*.tcc": "cpp",
+        "complex": "cpp",
+        "cstddef": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "iomanip": "cpp",
+        "ostream": "cpp",
+        "thread": "cpp"
+    }
+}
