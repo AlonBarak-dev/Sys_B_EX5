@@ -31,6 +31,7 @@ namespace ariel{
                     Node* operator*() const;
                     Node* operator->() const;
                     bool operator!=(const Iterator&) const;
+                    void set_traverse(int travel);
             };
 
 

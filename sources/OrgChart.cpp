@@ -23,6 +23,10 @@ namespace ariel{
         return false;
     }
 
+    void OrgChart::Iterator::set_traverse(int travel){
+        this->_traverse = travel;
+    }
+
     // OrgChart methods --------------------------------------
 
     OrgChart& OrgChart::add_root(const std::string& root_name){
@@ -63,20 +67,17 @@ namespace ariel{
         {
             st << " -- " << organization.list_of_nodes.at(i) << " " << endl;
         }
-        
-
-
-
         return st;
     }
 
     OrgChart::Iterator OrgChart::begin_level_order(){
-        return Iterator{};
+        
+        Iterator it{&(this->_root)};
+        it.set_traverse(0);
+        return it;
     }
     
-    OrgChart::Iterator OrgChart::end_level_order(){
-        return Iterator{};
-    }
+    OrgChart::Iterator OrgChart::end_level_order(){}
     
     OrgChart::Iterator OrgChart::begin_reverse_order(){
         return Iterator{};
