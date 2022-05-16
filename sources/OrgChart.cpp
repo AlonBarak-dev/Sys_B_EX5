@@ -7,20 +7,49 @@ using namespace std;
 namespace ariel{
 
     // iterator methods
-    void OrgChart::Iterator::operator++(){}
+    OrgChart::Iterator& OrgChart::Iterator::operator++(){
+
+        if (this->_traverse == 0)
+        {
+            // level order iterator
+
+            this->_ptr = this->node_queue.front();       // next in the queue
+            if (this->_ptr)
+            {
+                for(Node* sub : this->_ptr->getSubNodes()){
+                    this->node_queue.push(sub);
+                }
+            }
+            this->node_queue.pop();     // pop the first element in the queue
+            return *this;
+        }
+
+        if (this->_traverse == 1)
+        {
+            // reverse level order iterator
+            return *this;
+        }
+
+        if (this->_traverse == 2)
+        {
+            // pre order iterator 
+            return *this;
+        }
+        
+        return *this;
+    }
     
-    void OrgChart::Iterator::operator--(){}
     
-    Node* OrgChart::Iterator::operator*() const{
-        return this->_ptr;
+    Node& OrgChart::Iterator::operator*() const{
+        return *this->_ptr;
     }
     
     Node* OrgChart::Iterator::operator->() const{
         return this->_ptr;
     }
     
-    bool OrgChart::Iterator::operator!=(const Iterator&) const{
-        return false;
+    bool OrgChart::Iterator::operator!=(const Iterator& it) const{
+        return this->_ptr != it._ptr;
     }
 
     void OrgChart::Iterator::set_traverse(int travel){
@@ -31,9 +60,14 @@ namespace ariel{
 
     OrgChart& OrgChart::add_root(const std::string& root_name){
         // change the name of the root
-        this->_root.setName(root_name);
-        Node new_root{root_name};
-        this->list_of_nodes.push_back(new_root);
+        if (!this->_root)
+        {
+            this->_root = new Node(root_name);
+        }
+        else{
+            this->_root->setName(root_name);
+        }
+        this->list_of_nodes.push_back(this->_root);
         return *this;
     }
 
@@ -44,11 +78,11 @@ namespace ariel{
         // loop over the members and search for super
         for (size_t i = 0; i < this->list_of_nodes.size(); i++)
         {
-            if (this->list_of_nodes.at(i).getName() == super)
+            if (this->list_of_nodes.at(i)->getName() == super)
             {
                 // add the new sub to the super node
-                Node new_sub{sub};
-                this->list_of_nodes.at(i).addSubNode(new_sub);
+                Node* new_sub = new Node{sub};
+                this->list_of_nodes.at(i)->addSubNode(new_sub);
                 this->list_of_nodes.push_back(new_sub);
                 found = true;
                 break;
@@ -65,19 +99,20 @@ namespace ariel{
 
         for (size_t i = 0; i < organization.list_of_nodes.size(); i++)
         {
-            st << " -- " << organization.list_of_nodes.at(i) << " " << endl;
+            st << " -- " << organization.list_of_nodes.at(i)->getName() << " " << endl;
         }
         return st;
     }
 
     OrgChart::Iterator OrgChart::begin_level_order(){
         
-        Iterator it{&(this->_root)};
-        it.set_traverse(0);
+        Iterator it{this->_root, 0};
         return it;
     }
     
-    OrgChart::Iterator OrgChart::end_level_order(){}
+    OrgChart::Iterator OrgChart::end_level_order(){
+        return Iterator{};
+    }
     
     OrgChart::Iterator OrgChart::begin_reverse_order(){
         return Iterator{};

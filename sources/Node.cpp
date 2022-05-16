@@ -13,19 +13,19 @@ namespace ariel{
         this->_name = newName;
     }
 
-    vector<Node> Node::getSubNodes(){
+    vector<Node*> Node::getSubNodes(){
         return this->_subNodes;
     }
 
-    void Node::addSubNode(Node node){
+    void Node::addSubNode(Node* node){
         this->_subNodes.push_back(node);
     }
 
-    void Node::delSubNode(Node node){
+    void Node::delSubNode(Node* node){
         
         for (size_t i = 0; i < this->_subNodes.size(); i++)
         {
-            if (this->_subNodes.at(i).getName() == node.getName())
+            if (this->_subNodes.at(i)->getName() == node->getName())
             {
                 this->_subNodes.erase(this->_subNodes.begin()+(int)i);
                 break;

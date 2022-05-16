@@ -6,7 +6,7 @@ namespace ariel{
     class Node{
 
         private:
-            std::vector<Node> _subNodes;
+            std::vector<Node*> _subNodes;
             int _num_of_sub_nodes;
             std::string _name;
             int _size;
@@ -19,9 +19,9 @@ namespace ariel{
 
             std::string getName();
             void setName(std::string newName);
-            std::vector<Node> getSubNodes();
-            void addSubNode(Node node);
-            void delSubNode(Node node);
+            std::vector<Node*> getSubNodes();
+            void addSubNode(Node* node);
+            void delSubNode(Node* node);
             int getNumOfSubNodes();
             friend std::ostream& operator<<(std::ostream& st, Node& node);
             int size();

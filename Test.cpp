@@ -131,10 +131,10 @@ TEST_CASE("Node"){
     Node n5{"Haim"};
 
     CHECK_EQ(n1.getName(), "Alon");
-    CHECK_EQ(n1.getName(), "Dan");
-    CHECK_EQ(n1.getName(), "Barak");
-    CHECK_EQ(n1.getName(), "Yossi");
-    CHECK_EQ(n1.getName(), "Haim");
+    CHECK_EQ(n2.getName(), "Dan");
+    CHECK_EQ(n3.getName(), "Barak");
+    CHECK_EQ(n4.getName(), "Yossi");
+    CHECK_EQ(n5.getName(), "Haim");
 
     CHECK_EQ(n1.size(), 4);
     CHECK_EQ(n2.size(), 3);
@@ -142,10 +142,10 @@ TEST_CASE("Node"){
     CHECK_EQ(n4.size(), 5);
     CHECK_EQ(n5.size(), 4);
 
-    CHECK_NOTHROW(n1.addSubNode(n2));
+    CHECK_NOTHROW(n1.addSubNode(&n2));
     CHECK_EQ(n1.getNumOfSubNodes(), 1);
 
-    CHECK_NOTHROW(n1.addSubNode(n3));
+    CHECK_NOTHROW(n1.addSubNode(&n3));
     CHECK_EQ(n1.getNumOfSubNodes(), 2);
     
 

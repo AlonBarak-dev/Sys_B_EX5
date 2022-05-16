@@ -1,5 +1,8 @@
 #pragma once
 #include "Node.hpp"
+#include <stack>
+#include <queue>
+#include <algorithm>
 
 namespace ariel{
 
@@ -7,14 +10,14 @@ namespace ariel{
     class OrgChart{
 
         private:
-            Node _root;
+            Node* _root;
             int _size;
-            std::vector<Node> list_of_nodes;
+            std::vector<Node*> list_of_nodes;
 
         
         public:
 
-            OrgChart() : _size(0) {}
+            OrgChart() : _size(0) , _root(nullptr){}
 
             class Iterator{
 
@@ -22,13 +25,38 @@ namespace ariel{
                     Node* _ptr;
                     // 0 : Level order, 1 : reverse level order, 2 : preorder
                     int _traverse; 
+                    std::queue<Node*> node_queue;   
+                    std::stack<Node*> node_stack;     
 
                 public:
-                    Iterator(Node* ptr) : _ptr(ptr), _traverse(0){}
+                    Iterator(Node* ptr, int traverse) : _ptr(ptr), _traverse(traverse){
+                        
+                        if(ptr){
+                            
+                            if (traverse == 0)
+                            {
+                                // level order iterator
+                                // noitce that ptr is the root of the organization
+                                for (Node* sub : this->_ptr->getSubNodes())
+                                {
+                                    // push the sub of the root to the queue
+                                    this->node_queue.push(sub);
+                                }
+                            }
+                            else if(traverse == 1)
+                            {
+                                // reverse level order iterator
+                            }
+                            else if(traverse == 2)
+                            {
+                                // preorder iterator
+                            }
+                        }
+
+                    }
                     Iterator(): _ptr(NULL){}
-                    void operator++();
-                    void operator--();
-                    Node* operator*() const;
+                    Iterator& operator++();
+                    Node& operator*() const;
                     Node* operator->() const;
                     bool operator!=(const Iterator&) const;
                     void set_traverse(int travel);
