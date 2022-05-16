@@ -18,18 +18,20 @@ namespace ariel{
         public:
 
             OrgChart() : _size(0) , _root(nullptr){}
+            OrgChart(int size) : _size(size), _root(nullptr){}
 
             class Iterator{
 
                 private:
                     Node* _ptr;
+                    const OrgChart& _org_chart;
                     // 0 : Level order, 1 : reverse level order, 2 : preorder
                     int _traverse; 
                     std::queue<Node*> node_queue;   
                     std::stack<Node*> node_stack;     
 
                 public:
-                    Iterator(Node* ptr, int traverse) : _ptr(ptr), _traverse(traverse){
+                    Iterator(Node* ptr, OrgChart& organization ,int traverse) : _ptr(ptr), _traverse(traverse), _org_chart(organization){
                         
                         if(ptr){
                             
@@ -45,7 +47,18 @@ namespace ariel{
                             }
                             else if(traverse == 1)
                             {
-                                // reverse level order iterator
+                                // reverse level order iterato
+
+                                this->node_stack.push(nullptr);
+                                // iterate over the elements in a level order and push into a stack
+                                // this will give us the reverse implementation
+                                for (auto i = organization.begin_level_order(); i != organization.end_level_order(); ++i)
+                                {
+                                    this->node_stack.push(&(*i));
+                                }
+                                this->_ptr = this->node_stack.top();    
+                                this->node_stack.pop();
+
                             }
                             else if(traverse == 2)
                             {
@@ -54,16 +67,14 @@ namespace ariel{
                         }
 
                     }
-                    Iterator(): _ptr(NULL){}
+
+                    Iterator(OrgChart& org): _ptr(NULL), _org_chart(org){}
                     Iterator& operator++();
                     Node& operator*() const;
                     Node* operator->() const;
                     bool operator!=(const Iterator&) const;
                     void set_traverse(int travel);
             };
-
-
-
 
             OrgChart& add_root(const std::string& root_name);
             OrgChart& add_sub(const std::string& super, const std::string& sub);
@@ -76,7 +87,6 @@ namespace ariel{
             Iterator end_preorder();
             Iterator begin();
             Iterator end();
-
 
 
     };

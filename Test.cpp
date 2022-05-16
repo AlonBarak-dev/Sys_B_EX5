@@ -1,5 +1,6 @@
 #include "doctest.h"
 #include "sources/OrgChart.hpp"
+#include <iostream>
 
 using namespace std;
 using namespace ariel;
@@ -75,15 +76,16 @@ TEST_CASE("REVERSE LEVEL ORDER"){
         Teahcer1    Teacher2              Teacher3         Teacher4
     */   
     // 7 tests
-    vector<string> arr = {"Principle", "Vice Principle", "Vice Principle2", "Teacher1", "Teacher2", "Teacher3", "Teacher4"};
-    size_t i = arr.size()-1;
+    vector<string> arr = {"Teacher4", "Teacher3", "Teacher2", "Teacher1", "Vice Principle2", "Vice Principle", "Principle"};
+    size_t i = 0;
     for (auto it = organization.begin_reverse_order(); it != organization.reverse_order(); ++it)
     {
         try{
             CHECK((it)->getName() == arr.at(i));
+            std::cout << it->getName() << " ";
         }
         catch(exception e){}
-        i--;
+        i++;
     }
 
 }

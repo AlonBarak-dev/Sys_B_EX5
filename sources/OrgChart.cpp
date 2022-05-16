@@ -27,6 +27,8 @@ namespace ariel{
         if (this->_traverse == 1)
         {
             // reverse level order iterator
+            this->_ptr = this->node_stack.top();    // next in the stack
+            this->node_stack.pop();     // remove the prev one
             return *this;
         }
 
@@ -106,36 +108,36 @@ namespace ariel{
 
     OrgChart::Iterator OrgChart::begin_level_order(){
         
-        Iterator it{this->_root, 0};
+        Iterator it{this->_root,*this ,0};
         return it;
     }
     
     OrgChart::Iterator OrgChart::end_level_order(){
-        return Iterator{};
+        return Iterator{*this};
     }
     
     OrgChart::Iterator OrgChart::begin_reverse_order(){
-        return Iterator{};
+        return Iterator{this->_root, *this, 1};
     }
     
     OrgChart::Iterator OrgChart::reverse_order(){
-        return Iterator{};
+        return Iterator{*this};
     }
     
     OrgChart::Iterator OrgChart::begin_preorder(){
-        return Iterator{};
+        return Iterator{*this};
     }
     
     OrgChart::Iterator OrgChart::end_preorder(){
-        return Iterator{};
+        return Iterator{*this};
     }
     
     OrgChart::Iterator OrgChart::begin(){
-        return Iterator{};
+        return Iterator{*this};
     }
     
     OrgChart::Iterator OrgChart::end(){
-        return Iterator{};
+        return Iterator{*this};
     }
 
 
