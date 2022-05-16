@@ -29,7 +29,7 @@ TEST_CASE("LEVEL ORDER"){
     organization.add_sub("Vice Principle", "Teacher1");         
     organization.add_sub("Vice Principle", "Teacher2"); 
     organization.add_sub("Vice Principle2", "Teacher3");
-    organization.add_sub("Vice Principle2", "Teahcer4");  
+    organization.add_sub("Vice Principle2", "Teacher4");  
 
     /*
         Principle
@@ -40,12 +40,12 @@ TEST_CASE("LEVEL ORDER"){
     */   
 
     // 7 tests
-    vector<string> arr = {"Principle", "Vice Principle", "VIce Principle2", "Teacher1", "Teacher2", "Teacher3", "Teacher4"};
+    vector<string> arr = {"Principle", "Vice Principle", "Vice Principle2", "Teacher1", "Teacher2", "Teacher3", "Teacher4"};
     size_t i = 0;
     for (auto it = organization.begin_level_order(); it != organization.end_level_order(); ++it)
     {
         try{
-            CHECK((*it)->getName() == arr.at(i));
+            CHECK((it)->getName() == arr.at(i));
         }
         catch(exception e){}
        i++;
@@ -65,7 +65,7 @@ TEST_CASE("REVERSE LEVEL ORDER"){
       .add_sub("Vice Principle", "Teacher1")         
       .add_sub("Vice Principle", "Teacher2") 
       .add_sub("Vice Principle2", "Teacher3")
-      .add_sub("Vice Principle2", "Teahcer4");  
+      .add_sub("Vice Principle2", "Teacher4");  
 
     /*
         Principle
@@ -75,12 +75,12 @@ TEST_CASE("REVERSE LEVEL ORDER"){
         Teahcer1    Teacher2              Teacher3         Teacher4
     */   
     // 7 tests
-    vector<string> arr = {"Principle", "Vice Principle", "VIce Principle2", "Teacher1", "Teacher2", "Teacher3", "Teacher4"};
+    vector<string> arr = {"Principle", "Vice Principle", "Vice Principle2", "Teacher1", "Teacher2", "Teacher3", "Teacher4"};
     size_t i = arr.size()-1;
     for (auto it = organization.begin_reverse_order(); it != organization.reverse_order(); ++it)
     {
         try{
-            CHECK((*it)->getName() == arr.at(i));
+            CHECK((it)->getName() == arr.at(i));
         }
         catch(exception e){}
         i--;
@@ -99,7 +99,7 @@ TEST_CASE("PREORDER"){
       .add_sub("Vice Principle", "Teacher1")         
       .add_sub("Vice Principle", "Teacher2") 
       .add_sub("Vice Principle2", "Teacher3")
-      .add_sub("Vice Principle2", "Teahcer4");  
+      .add_sub("Vice Principle2", "Teacher4");  
 
     /*
         Principle
@@ -109,12 +109,12 @@ TEST_CASE("PREORDER"){
         Teahcer1    Teacher2              Teacher3         Teacher4
     */   
     // 7 tests
-    vector<string> arr = {"Principle", "Vice Principle", "Teacher1", "Teacher2","VIce Principle2", "Teacher3", "Teacher4"};
+    vector<string> arr = {"Principle", "Vice Principle", "Teacher1", "Teacher2","Vice Principle2", "Teacher3", "Teacher4"};
     size_t i = 0;
     for (auto it = organization.begin_reverse_order(); it != organization.reverse_order();++it)
     {
         try{
-            CHECK((*it)->getName() == arr.at(i));
+            CHECK((it)->getName() == arr.at(i));
         }
         catch(exception e){}
         i++;
