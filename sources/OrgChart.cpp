@@ -6,7 +6,7 @@ using namespace std;
 
 namespace ariel{
 
-    // iterator methods
+    // iterator methods --------------------------------
     OrgChart::Iterator& OrgChart::Iterator::operator++(){
 
         if (this->_traverse == 0)
@@ -35,6 +35,17 @@ namespace ariel{
         if (this->_traverse == 2)
         {
             // pre order iterator 
+            this->_ptr = this->node_vector.front();   // next node
+            this->node_vector.erase(this->node_vector.begin());
+            if (this->_ptr && this->_ptr->getSubNodes().size() > 0)
+            {
+                int idx = 0;
+                for(Node* sub : this->_ptr->getSubNodes()){
+                    this->node_vector.insert(this->node_vector.begin()+idx, sub);
+                    idx++;
+                }
+            }
+            
             return *this;
         }
         
@@ -125,7 +136,7 @@ namespace ariel{
     }
     
     OrgChart::Iterator OrgChart::begin_preorder(){
-        return Iterator{*this};
+        return Iterator{this->_root, *this, 2};
     }
     
     OrgChart::Iterator OrgChart::end_preorder(){

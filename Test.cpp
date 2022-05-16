@@ -82,7 +82,6 @@ TEST_CASE("REVERSE LEVEL ORDER"){
     {
         try{
             CHECK((it)->getName() == arr.at(i));
-            std::cout << it->getName() << " ";
         }
         catch(exception e){}
         i++;
@@ -113,7 +112,7 @@ TEST_CASE("PREORDER"){
     // 7 tests
     vector<string> arr = {"Principle", "Vice Principle", "Teacher1", "Teacher2","Vice Principle2", "Teacher3", "Teacher4"};
     size_t i = 0;
-    for (auto it = organization.begin_reverse_order(); it != organization.reverse_order();++it)
+    for (auto it = organization.begin_preorder(); it != organization.end_preorder();++it)
     {
         try{
             CHECK((it)->getName() == arr.at(i));

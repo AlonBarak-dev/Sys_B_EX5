@@ -3,7 +3,11 @@ using namespace std;
 
 namespace ariel{
 
-    // Node::~Node(){};
+    // Node::~Node(){
+    //     for(Node* sub : this->_subNodes){
+    //         delete sub;
+    //     }
+    // };
 
     string Node::getName(){
         return this->_name;

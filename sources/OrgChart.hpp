@@ -29,11 +29,12 @@ namespace ariel{
                     int _traverse; 
                     std::queue<Node*> node_queue;   
                     std::stack<Node*> node_stack;     
+                    std::vector<Node*> node_vector;
 
                 public:
                     Iterator(Node* ptr, OrgChart& organization ,int traverse) : _ptr(ptr), _traverse(traverse), _org_chart(organization){
                         
-                        if(ptr){
+                        if(ptr != nullptr){
                             
                             if (traverse == 0)
                             {
@@ -63,12 +64,17 @@ namespace ariel{
                             else if(traverse == 2)
                             {
                                 // preorder iterator
+                                for (Node* sub : this->_ptr->getSubNodes())
+                                {
+                                    this->node_vector.push_back(sub);
+                                }
+                                this->node_vector.push_back(nullptr);
                             }
                         }
 
                     }
 
-                    Iterator(OrgChart& org): _ptr(NULL), _org_chart(org){}
+                    Iterator(OrgChart& org): _ptr(nullptr), _org_chart(org), _traverse(0){}
                     Iterator& operator++();
                     Node& operator*() const;
                     Node* operator->() const;
