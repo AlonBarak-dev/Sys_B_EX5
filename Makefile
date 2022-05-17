@@ -21,6 +21,9 @@ demo: Demo.o $(OBJECTS)
 test: TestCounter.o Test.o $(OBJECTS)
 	$(CXX) -g3 $(CXXFLAGS) $^ -o $@
 
+main: Main.o $(OBJECTS)
+	$(CXX) -g3 $(CXXFLAGS) $^ -o $@
+
 tidy:
 	clang-tidy $(HEADERS) $(TIDY_FLAGS) --
 
