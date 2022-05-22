@@ -46,7 +46,7 @@ TEST_CASE("LEVEL ORDER"){
     for (auto it = organization.begin_level_order(); it != organization.end_level_order(); ++it)
     {
         try{
-            CHECK((it)->getName() == arr.at(i));
+            CHECK(*it == arr.at(i));
         }
         catch(exception e){}
        i++;
@@ -81,7 +81,7 @@ TEST_CASE("REVERSE LEVEL ORDER"){
     for (auto it = organization.begin_reverse_order(); it != organization.reverse_order(); ++it)
     {
         try{
-            CHECK((it)->getName() == arr.at(i));
+            CHECK(*it == arr.at(i));
         }
         catch(exception e){}
         i++;
@@ -115,7 +115,7 @@ TEST_CASE("PREORDER"){
     for (auto it = organization.begin_preorder(); it != organization.end_preorder();++it)
     {
         try{
-            CHECK((it)->getName() == arr.at(i));
+            CHECK(*it == arr.at(i));
         }
         catch(exception e){}
         i++;

@@ -9,12 +9,12 @@ namespace ariel{
     //     }
     // };
 
-    string Node::getName(){
+    string& Node::getName(){
         return this->_name;
     }
 
     void Node::setName(string newName){
-        this->_name = newName;
+        this->_name = std::move(newName);
     }
 
     vector<Node*> Node::getSubNodes(){
@@ -47,7 +47,9 @@ namespace ariel{
 
     ostream& operator<<(ostream& st, Node& node){return st << node.getName();}
 
-
+    int Node::get_level() const{
+        return this->_level;
+    }
 
 
 }

@@ -3,6 +3,7 @@
 #include <stack>
 #include <queue>
 #include <algorithm>
+#include <iostream>
 
 namespace ariel{
 
@@ -49,17 +50,27 @@ namespace ariel{
                             else if(traverse == 1)
                             {
                                 // reverse level order iterato
-
                                 this->node_stack.push(nullptr);
-                                // iterate over the elements in a level order and push into a stack
-                                // this will give us the reverse implementation
-                                for (auto i = organization.begin_level_order(); i != organization.end_level_order(); ++i)
+                                int curr_level = 0;
+                                while (this->node_stack.size() <= this->_org_chart.list_of_nodes.size())
                                 {
-                                    this->node_stack.push(&(*i));
+                                    std::vector<Node*> level_vector;
+                                    for (Node* sub : this->_org_chart.list_of_nodes)
+                                    {
+                                        if (sub->get_level() == curr_level)
+                                        {
+                                            level_vector.push_back(sub);
+                                        }
+                                    }
+                                    std::reverse(level_vector.begin(), level_vector.end());
+                                    for (size_t i = 0; i < level_vector.size(); i++)
+                                    {
+                                        this->node_stack.push(level_vector.at(i));
+                                    }
+                                    curr_level++;
                                 }
-                                this->_ptr = this->node_stack.top();    
+                                this->_ptr = this->node_stack.top();
                                 this->node_stack.pop();
-
                             }
                             else if(traverse == 2)
                             {
@@ -71,13 +82,12 @@ namespace ariel{
                                 this->node_vector.push_back(nullptr);
                             }
                         }
-
                     }
 
                     Iterator(OrgChart& org): _ptr(nullptr), _org_chart(org), _traverse(0){}
                     Iterator& operator++();
-                    Node& operator*() const;
-                    Node* operator->() const;
+                    std::string operator*() const;
+                    std::string* operator->() const;
                     bool operator!=(const Iterator&) const;
                     void set_traverse(int travel);
             };

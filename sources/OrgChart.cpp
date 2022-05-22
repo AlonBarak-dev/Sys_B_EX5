@@ -12,9 +12,13 @@ namespace ariel{
         if (this->_traverse == 0)
         {
             // level order iterator
-
+            if (this->node_queue.empty())
+            {
+                this->_ptr = nullptr;
+                return *this;
+            }
             this->_ptr = this->node_queue.front();       // next in the queue
-            if (this->_ptr)
+            if (this->_ptr != nullptr)
             {
                 for(Node* sub : this->_ptr->getSubNodes()){
                     this->node_queue.push(sub);
@@ -23,21 +27,30 @@ namespace ariel{
             this->node_queue.pop();     // pop the first element in the queue
             return *this;
         }
-
         if (this->_traverse == 1)
         {
             // reverse level order iterator
-            this->_ptr = this->node_stack.top();    // next in the stack
-            this->node_stack.pop();     // remove the prev one
-            return *this;
-        }
 
+            if (this->node_stack.empty())
+            {
+                this->_ptr = nullptr;
+                return *this;
+            }
+            this->_ptr = (this->node_stack.top());    // next in the stack
+            this->node_stack.pop();     // remove the prev one
+            return *this;   
+        }
         if (this->_traverse == 2)
         {
             // pre order iterator 
+            if (this->node_vector.empty())
+            {
+                this->_ptr = nullptr;
+                return *this;
+            }
             this->_ptr = this->node_vector.front();   // next node
             this->node_vector.erase(this->node_vector.begin());
-            if (this->_ptr && this->_ptr->getSubNodes().size() > 0)
+            if ((this->_ptr != nullptr) && !this->_ptr->getSubNodes().empty())
             {
                 int idx = 0;
                 for(Node* sub : this->_ptr->getSubNodes()){
@@ -45,20 +58,18 @@ namespace ariel{
                     idx++;
                 }
             }
-            
             return *this;
         }
-        
         return *this;
     }
     
     
-    Node& OrgChart::Iterator::operator*() const{
-        return *this->_ptr;
+    string OrgChart::Iterator::operator*() const{
+        return this->_ptr->getName();
     }
     
-    Node* OrgChart::Iterator::operator->() const{
-        return this->_ptr;
+    string* OrgChart::Iterator::operator->() const{
+        return &(this->_ptr->getName());
     }
     
     bool OrgChart::Iterator::operator!=(const Iterator& it) const{
@@ -73,14 +84,15 @@ namespace ariel{
 
     OrgChart& OrgChart::add_root(const std::string& root_name){
         // change the name of the root
-        if (!this->_root)
+        if (this->_root == nullptr)
         {
-            this->_root = new Node(root_name);
+            this->_root = new Node(root_name, 0);
+            this->list_of_nodes.push_back(this->_root);
         }
         else{
             this->_root->setName(root_name);
         }
-        this->list_of_nodes.push_back(this->_root);
+        
         return *this;
     }
 
@@ -94,9 +106,11 @@ namespace ariel{
             if (this->list_of_nodes.at(i)->getName() == super)
             {
                 // add the new sub to the super node
-                Node* new_sub = new Node{sub};
+                int level = 1 + this->list_of_nodes.at(i)->get_level();
+                Node* new_sub = new Node{sub, level};
                 this->list_of_nodes.at(i)->addSubNode(new_sub);
-                this->list_of_nodes.push_back(new_sub);
+                auto idx = this->list_of_nodes.begin() + (int)i;
+                this->list_of_nodes.insert(idx, new_sub);
                 found = true;
                 break;
             }
@@ -118,36 +132,68 @@ namespace ariel{
     }
 
     OrgChart::Iterator OrgChart::begin_level_order(){
-        
+
+        if (this->list_of_nodes.empty())
+        {
+            throw runtime_error("EMPTY!");
+        }
         Iterator it{this->_root,*this ,0};
         return it;
     }
     
     OrgChart::Iterator OrgChart::end_level_order(){
+        if (this->list_of_nodes.empty())
+        {
+            throw runtime_error("EMPTY!");
+        }
         return Iterator{*this};
     }
     
     OrgChart::Iterator OrgChart::begin_reverse_order(){
+        if (this->list_of_nodes.empty())
+        {
+            throw runtime_error("EMPTY!");
+        }
         return Iterator{this->_root, *this, 1};
     }
     
     OrgChart::Iterator OrgChart::reverse_order(){
+        if (this->list_of_nodes.empty())
+        {
+            throw runtime_error("EMPTY!");
+        }
         return Iterator{*this};
     }
     
     OrgChart::Iterator OrgChart::begin_preorder(){
+        if (this->list_of_nodes.empty())
+        {
+            throw runtime_error("EMPTY!");
+        }
         return Iterator{this->_root, *this, 2};
     }
     
     OrgChart::Iterator OrgChart::end_preorder(){
+        if (this->list_of_nodes.empty())
+        {
+            throw runtime_error("EMPTY!");
+        }
         return Iterator{*this};
     }
     
     OrgChart::Iterator OrgChart::begin(){
-        return Iterator{*this};
+        if (this->list_of_nodes.empty())
+        {
+            throw runtime_error("EMPTY!");
+        }
+        return Iterator{this->_root, *this, 0};
     }
     
     OrgChart::Iterator OrgChart::end(){
+        if (this->list_of_nodes.empty())
+        {
+            throw runtime_error("EMPTY!");
+        }
         return Iterator{*this};
     }
 
