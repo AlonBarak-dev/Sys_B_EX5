@@ -221,6 +221,23 @@ namespace ariel{
 
     }
 
+    OrgChart& OrgChart::operator=(OrgChart&& other) noexcept{
+        // operator = preform shallow copy
+
+        if (this != &other)
+        {
+            this->_root = other._root;
+            this->_size = other._size;
+            this->list_of_nodes = other.list_of_nodes;
+
+            other._root = nullptr;
+            other._size = 0;
+            other.list_of_nodes.clear();
+        }
+        return *this;
+        
+    }
+
     OrgChart::Iterator OrgChart::begin_level_order(){
 
         if (this->list_of_nodes.empty())

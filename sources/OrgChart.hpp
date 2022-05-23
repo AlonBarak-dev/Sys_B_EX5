@@ -37,8 +37,6 @@ namespace ariel{
                 other.list_of_nodes.clear();
             }
             
-
-
             class Iterator{
 
                 private:
@@ -64,6 +62,7 @@ namespace ariel{
             OrgChart& add_sub(const std::string& super, const std::string& sub);
             friend std::ostream& operator<<(std::ostream& st, OrgChart& organization);
             OrgChart& operator=(const OrgChart& other);
+            OrgChart& operator=(OrgChart&& other) noexcept;
             Iterator begin_level_order();
             Iterator end_level_order();
             Iterator begin_reverse_order();
