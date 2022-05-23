@@ -6,7 +6,60 @@ using namespace std;
 
 namespace ariel{
 
-    // iterator methods --------------------------------
+    // ------------------------------------------ iterator methods --------------------------------
+
+    // ctor
+    OrgChart::Iterator::Iterator(Node* ptr, OrgChart& organization ,int traverse) : _ptr(ptr), _traverse(traverse), _org_chart(organization){
+                        
+        if(ptr != nullptr){
+            
+            if (traverse == 0)
+            {
+                // level order iterator
+                // noitce that ptr is the root of the organization
+                for (Node* sub : this->_ptr->getSubNodes())
+                {
+                    // push the sub of the root to the queue
+                    this->node_queue.push(sub);
+                }
+            }
+            else if(traverse == 1)
+            {
+                // reverse level order iterato
+                this->node_stack.push(nullptr);
+                int curr_level = 0;
+                while (this->node_stack.size() <= this->_org_chart.list_of_nodes.size())
+                {
+                    std::vector<Node*> level_vector;
+                    for (Node* sub : this->_org_chart.list_of_nodes)
+                    {
+                        if (sub->get_level() == curr_level)
+                        {
+                            level_vector.push_back(sub);
+                        }
+                    }
+                    std::reverse(level_vector.begin(), level_vector.end());
+                    for (size_t i = 0; i < level_vector.size(); i++)
+                    {
+                        this->node_stack.push(level_vector.at(i));
+                    }
+                    curr_level++;
+                }
+                this->_ptr = this->node_stack.top();
+                this->node_stack.pop();
+            }
+            else if(traverse == 2)
+            {
+                // preorder iterator
+                for (Node* sub : this->_ptr->getSubNodes())
+                {
+                    this->node_vector.push_back(sub);
+                }
+                this->node_vector.push_back(nullptr);
+            }
+        }
+    }
+
     OrgChart::Iterator& OrgChart::Iterator::operator++(){
 
         if (this->_traverse == 0)
@@ -80,7 +133,7 @@ namespace ariel{
         this->_traverse = travel;
     }
 
-    // OrgChart methods --------------------------------------
+    // -------------------------------------OrgChart methods --------------------------------------
 
     OrgChart& OrgChart::add_root(const std::string& root_name){
         // change the name of the root
@@ -124,11 +177,48 @@ namespace ariel{
 
     ostream& operator<<(ostream& st, OrgChart& organization){
 
-        for (size_t i = 0; i < organization.list_of_nodes.size(); i++)
+        // print the organization's layers
+        stack<Node*> node_stack;
+        node_stack.push(nullptr);
+        int curr_level = 0;
+        while (node_stack.size() <= organization.list_of_nodes.size())
         {
-            st << " -- " << organization.list_of_nodes.at(i)->getName() << " " << endl;
+            std::vector<Node*> level_vector;
+            for (Node* sub : organization.list_of_nodes)
+            {
+                if (sub->get_level() == curr_level)
+                {
+                    level_vector.push_back(sub);
+                }
+            }
+            std::reverse(level_vector.begin(), level_vector.end());
+            for (size_t i = 0; i < level_vector.size(); i++)
+            {
+                node_stack.push(level_vector.at(i));
+                st << level_vector.at(i)->getName() << "       ";
+            }
+            st << "\n";
+            curr_level++;
         }
         return st;
+    }
+
+    OrgChart& OrgChart::operator=(const OrgChart& other){
+        // operator = preform deep copy
+
+        // in case both are the same
+        if (this == &other)
+        {
+            return *this;
+        }
+        // else
+        this->list_of_nodes.clear();
+        for(Node* n : other.list_of_nodes){
+            this->list_of_nodes.push_back(n);
+        }
+        this->_size = other._size;
+        return *this;
+
     }
 
     OrgChart::Iterator OrgChart::begin_level_order(){

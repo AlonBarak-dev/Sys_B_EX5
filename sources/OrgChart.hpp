@@ -20,6 +20,24 @@ namespace ariel{
 
             OrgChart() : _size(0) , _root(nullptr){}
             OrgChart(int size) : _size(size), _root(nullptr){}
+            // deep copy ctor
+            OrgChart(const OrgChart& other) : _size(other._size), _root(other._root){
+                for(Node* n : other.list_of_nodes){
+                    this->list_of_nodes.push_back(n);
+                }
+            }
+            // move ctor
+            OrgChart(OrgChart&& other){
+                this->_root = other._root;
+                this->_size = other._size;
+                this->list_of_nodes = other.list_of_nodes;
+
+                other._root = nullptr;
+                other._size = 0;
+                other.list_of_nodes.clear();
+            }
+            
+
 
             class Iterator{
 
@@ -33,57 +51,7 @@ namespace ariel{
                     std::vector<Node*> node_vector;
 
                 public:
-                    Iterator(Node* ptr, OrgChart& organization ,int traverse) : _ptr(ptr), _traverse(traverse), _org_chart(organization){
-                        
-                        if(ptr != nullptr){
-                            
-                            if (traverse == 0)
-                            {
-                                // level order iterator
-                                // noitce that ptr is the root of the organization
-                                for (Node* sub : this->_ptr->getSubNodes())
-                                {
-                                    // push the sub of the root to the queue
-                                    this->node_queue.push(sub);
-                                }
-                            }
-                            else if(traverse == 1)
-                            {
-                                // reverse level order iterato
-                                this->node_stack.push(nullptr);
-                                int curr_level = 0;
-                                while (this->node_stack.size() <= this->_org_chart.list_of_nodes.size())
-                                {
-                                    std::vector<Node*> level_vector;
-                                    for (Node* sub : this->_org_chart.list_of_nodes)
-                                    {
-                                        if (sub->get_level() == curr_level)
-                                        {
-                                            level_vector.push_back(sub);
-                                        }
-                                    }
-                                    std::reverse(level_vector.begin(), level_vector.end());
-                                    for (size_t i = 0; i < level_vector.size(); i++)
-                                    {
-                                        this->node_stack.push(level_vector.at(i));
-                                    }
-                                    curr_level++;
-                                }
-                                this->_ptr = this->node_stack.top();
-                                this->node_stack.pop();
-                            }
-                            else if(traverse == 2)
-                            {
-                                // preorder iterator
-                                for (Node* sub : this->_ptr->getSubNodes())
-                                {
-                                    this->node_vector.push_back(sub);
-                                }
-                                this->node_vector.push_back(nullptr);
-                            }
-                        }
-                    }
-
+                    Iterator(Node* ptr, OrgChart& organization, int travers);
                     Iterator(OrgChart& org): _ptr(nullptr), _org_chart(org), _traverse(0){}
                     Iterator& operator++();
                     std::string operator*() const;
@@ -95,6 +63,7 @@ namespace ariel{
             OrgChart& add_root(const std::string& root_name);
             OrgChart& add_sub(const std::string& super, const std::string& sub);
             friend std::ostream& operator<<(std::ostream& st, OrgChart& organization);
+            OrgChart& operator=(const OrgChart& other);
             Iterator begin_level_order();
             Iterator end_level_order();
             Iterator begin_reverse_order();
