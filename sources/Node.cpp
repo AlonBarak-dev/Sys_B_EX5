@@ -3,11 +3,6 @@ using namespace std;
 
 namespace ariel{
 
-    // Node::~Node(){
-    //     for(Node* sub : this->_subNodes){
-    //         delete sub;
-    //     }
-    // };
 
     string& Node::getName(){
         return this->_name;
@@ -46,6 +41,47 @@ namespace ariel{
     }
 
     ostream& operator<<(ostream& st, Node& node){return st << node.getName();}
+
+    Node& Node::operator=(const Node& other){
+        // operator = preform a deep copy
+
+        // in case this = other
+        if (this == &other)
+        {
+            return *this;
+        }
+        // deep copy the attributes
+        for(Node* sub: other._subNodes){
+            this->_subNodes.push_back(sub);
+        }
+        this->_num_of_sub_nodes = other._num_of_sub_nodes;
+        this->_name = other._name;
+        this->_size = other._size;
+        this->_level = other._level;   
+
+        return *this;
+    }
+
+    Node& Node::operator=(Node&& other) noexcept{
+        // operator = preform a shallow copy
+
+        if (this != &other)
+        {
+            this->_subNodes = other._subNodes;
+            this->_num_of_sub_nodes = other._num_of_sub_nodes;
+            this->_name = other._name;
+            this->_size = other._size;
+            this->_level = other._level;
+
+            other._subNodes.clear();
+            other._size = 0;
+            other._level = 0;
+            other._num_of_sub_nodes = 0;
+            other._name.clear();
+        }
+        return *this;
+        
+    }
 
     int Node::get_level() const{
         return this->_level;

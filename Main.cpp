@@ -20,7 +20,10 @@ int main(){
     
     cout << organization << endl;
 
+    // REVERSE algorithm
+    cout << organization << endl;
     
+
 
 
     return 0;

@@ -27,7 +27,7 @@ namespace ariel{
                 }
             }
             // move ctor
-            OrgChart(OrgChart&& other){
+            OrgChart(OrgChart&& other) noexcept{
                 this->_root = other._root;
                 this->_size = other._size;
                 this->list_of_nodes = other.list_of_nodes;
@@ -36,8 +36,16 @@ namespace ariel{
                 other._size = 0;
                 other.list_of_nodes.clear();
             }
+
+            ~OrgChart(){
+                for (size_t i = 0; i <this->list_of_nodes.size(); i++)
+                {
+                    delete list_of_nodes.at(i);
+                }
+                
+            }
             
-            class Iterator{
+            class Iterator : std::vector<Node*>::iterator{
 
                 private:
                     Node* _ptr;
